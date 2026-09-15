@@ -1,0 +1,30 @@
+title: Installer Spawns Command Shell for Reconnaissance
+id: 442ee712-1de6-46e9-a0eb-b5036791edb2
+status: experimental
+description: A temporary executable (MSI4FFD.tmp) dropped by msiexec.exe launched
+  a command shell (cmd.exe), which then executed the whoami.exe utility. This indicates
+  an attempt to gain initial execution and perform system reconnaissance to identify
+  the current user and privileges.
+references:
+- https://attack.mitre.org/techniques/T1033/
+author: Autonomous Sysmon-Sigma Pipeline
+date: 2026/09/15
+tags:
+- attack.t1033
+- attack.execution
+- attack.t1033
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_process:
+    Image|endswith: \cmd.exe
+  selection_cli:
+    CommandLine|contains:
+    - whoami
+    - cmd.exe
+  condition: selection_process and selection_cli
+falsepositives:
+- Legitimate software installation routines
+- Administrative maintenance tasks
+level: high

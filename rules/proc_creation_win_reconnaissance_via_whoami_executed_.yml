@@ -1,0 +1,31 @@
+title: Reconnaissance via whoami executed by temporary installer
+id: 888cf402-e0aa-4818-bfcd-4e1370ec7bf7
+status: experimental
+description: A temporary executable (e.g., MSI4FFD.tmp), likely dropped by a malicious
+  MSI installer, spawned a command shell (cmd.exe) which then executed whoami.exe
+  to perform system information discovery. This indicates post-exploitation reconnaissance
+  activity, where an attacker is gathering details about the compromised system.
+references:
+- https://attack.mitre.org/techniques/T1082/
+author: Autonomous Sysmon-Sigma Pipeline
+date: 2026/09/15
+tags:
+- attack.t1082
+- attack.execution
+- attack.t1033
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_process:
+    Image|endswith: \cmd.exe
+  selection_cli:
+    CommandLine|contains:
+    - whoami
+    - cmd.exe
+    - MSI*.tmp
+  condition: selection_process and selection_cli
+falsepositives:
+- Legitimate software installation routines
+- Administrative maintenance tasks
+level: high
