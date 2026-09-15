@@ -13,7 +13,6 @@ date: 2026/09/15
 tags:
 - attack.t1033
 - attack.execution
-- attack.t1033
 logsource:
   category: process_creation
   product: windows
